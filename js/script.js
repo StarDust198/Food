@@ -98,14 +98,14 @@ window.addEventListener('DOMContentLoaded', () => {
           },
           modalTimerId = setTimeout(openModal, 60000),
           showModalByScroll = function() {
-            if (window.scrollY >= (window.scrollMaxY - 5) && modalCounter === 0) {
-                openModal();
-                window.removeEventListener('scroll', showModalByScroll);
-                clearInterval(modalTimerId);
+            console.log(window.scrollHeight);
+            if (window.pageYOffset + document.documentElement.clientHeight >= 
+                document.documentElement.scrollHeight) {
+                    openModal();
+                    window.removeEventListener('scroll', showModalByScroll);
+                    clearInterval(modalTimerId);
             }
           };
-    
-    let modalCounter = 0;
 
     modalBtns.forEach(btn => btn.addEventListener('click', openModal));
 
