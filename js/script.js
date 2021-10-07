@@ -171,12 +171,22 @@ window.addEventListener('DOMContentLoaded', () => {
         return await res.json();
     };
 
-    getResource('http://localhost:3000/menu')
+    axios.get('http://localhost:3000/menu')
+        .then(data => {
+            data.data.forEach(({img, altimg, title, descr, price}) => {
+                new MenuCard(img, altimg, title, descr, price).createCard();
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+/*     getResource('http://localhost:3000/menu')
         .then(data => {
             data.forEach(({img, altimg, title, descr, price}) => {
                 new MenuCard(img, altimg, title, descr, price).createCard();
             });
-        });
+        }); */
 
     // forms
 
@@ -218,9 +228,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const formData = new FormData(form);
 
+            const obj = Object.fromEntries(formData.entries());
+
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            postData('http://localhost:3000/requests', json)
+            axios.post('http://localhost:3000/requests', obj)
+                .then(response => {
+                    console.log(response);
+                    showThanksModal(message.success);
+                    form.reset();
+                    statusMessage.remove();
+                }).catch(() => {
+                    showThanksModal(message.failure);
+                }).finally(() => {
+                    form.reset();
+                });
+
+/*             postData('http://localhost:3000/requests', json)
                 .then(data => {
                     console.log(data);
                     showThanksModal(message.success);
@@ -230,7 +254,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     showThanksModal(message.failure);
                 }).finally(() => {
                     form.reset();
-                });
+                }); */
         });
     }
 
