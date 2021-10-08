@@ -161,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    const getResource = async (url) => {
+/*     const getResource = async (url) => {
         const res = await fetch(url);
 
         if (!res.ok) {
@@ -169,7 +169,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         return await res.json();
-    };
+    }; */
 
     axios.get('http://localhost:3000/menu')
         .then(data => {
@@ -202,7 +202,7 @@ window.addEventListener('DOMContentLoaded', () => {
         bindPostData(item);
     });
 
-    const postData = async (url, data) => {
+/*     const postData = async (url, data) => {
         const res = await fetch(url, {
             method: "POST",
             headers: {
@@ -212,7 +212,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         return await res.json();
-    };
+    }; */
 
     function bindPostData(form) {
         form.addEventListener('submit', (e) => {
@@ -230,7 +230,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const obj = Object.fromEntries(formData.entries());
 
-            const json = JSON.stringify(Object.fromEntries(formData.entries()));
+            // const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
             axios.post('http://localhost:3000/requests', obj)
                 .then(response => {
@@ -286,13 +286,45 @@ window.addEventListener('DOMContentLoaded', () => {
     // slider
 
     const sliderTab = document.querySelector('.offer__slider'),
-        sliderNext = sliderTab.querySelector('.offer__slider-next'),
-        sliderPrev = sliderTab.querySelector('.offer__slider-prev'),
-        sliderTotal = sliderTab.querySelector('#total'),
-        sliderCurrent = sliderTab.querySelector('#current'),   
-        slides = sliderTab.querySelectorAll('.offer__slide');
+          sliderNext = sliderTab.querySelector('.offer__slider-next'),
+          sliderPrev = sliderTab.querySelector('.offer__slider-prev'),
+          sliderTotal = sliderTab.querySelector('#total'),
+          sliderCurrent = sliderTab.querySelector('#current'),   
+          slides = sliderTab.querySelectorAll('.offer__slide'),
+          slidesWrapper = sliderTab.querySelector('.offer__slider-wrapper'),
+          slidesField = sliderTab.querySelector('.offer__slider-inner'),
+          width = window.getComputedStyle(slidesWrapper).width;
         
-    const showSlide = index => {
+    let slideIndex = Math.floor(1 + Math.random()*slides.length);
+
+    slidesField.style.width = 100 * slides.length + '%';
+    slidesField.style.display = 'flex';
+    slidesField.style.transition = '0.5s all';
+
+    slidesWrapper.style.overflow = 'hidden';
+
+    slides.forEach(slide => slide.style.width = width);             // force proper width
+
+    const moveSlide = (index = 0) => {
+        slideIndex + index > slides.length ? slideIndex = 1         // check if index's correct
+            : slideIndex + index === 0 ? slideIndex = slides.length : slideIndex += index;
+        sliderCurrent.textContent = getZero(slideIndex);
+        slidesField.style.transform = `translateX(${0 - 100/slides.length * (slideIndex - 1)}%)`;
+    };
+
+    sliderNext.addEventListener('click', () => {
+        moveSlide(1);
+    });
+     
+    sliderPrev.addEventListener('click', () => {
+        moveSlide(-1);
+    });
+
+    sliderTotal.textContent = getZero(slides.length);               // initial slider setup 
+    sliderCurrent.textContent = getZero(slideIndex);
+    moveSlide();
+
+/*     const showSlide = index => {
         slides.forEach(slide => slide.style.display = 'none');
         slides[index].style.display = 'block';
     };
@@ -320,5 +352,5 @@ window.addEventListener('DOMContentLoaded', () => {
     // initial slider setup
     sliderTotal.textContent = getZero(slides.length);
     sliderCurrent.textContent = getZero(Math.floor(1 + Math.random()*slides.length));
-    showSlide(+sliderCurrent.textContent - 1);
+    showSlide(+sliderCurrent.textContent - 1); */
 });
