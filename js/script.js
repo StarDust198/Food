@@ -300,57 +300,50 @@ window.addEventListener('DOMContentLoaded', () => {
     slidesField.style.width = 100 * slides.length + '%';
     slidesField.style.display = 'flex';
     slidesField.style.transition = '0.5s all';
-
     slidesWrapper.style.overflow = 'hidden';
 
-    slides.forEach(slide => slide.style.width = width);             // force proper width
+    const dotsField = document.createElement('div');
+    dotsField.classList.add('carousel-indicators');
+    slidesWrapper.style.position = 'relative';
+    slidesWrapper.append(dotsField);
 
-    const moveSlide = (index = 0) => {
-        slideIndex + index > slides.length ? slideIndex = 1         // check if index's correct
-            : slideIndex + index === 0 ? slideIndex = slides.length : slideIndex += index;
+    slides.forEach((slide, i) => {
+        slide.style.width = width;                           // force proper width
+        const dot = document.createElement('div');           // create indicators
+        dot.classList.add('dot');
+        dotsField.append(dot);
+    });
+
+    const dots = dotsField.querySelectorAll('.dot');
+    dots.forEach((item, i) => {
+        item.addEventListener('click', () => {
+            dots.forEach(dot => dot.style.opacity = 0.5);
+            item.style.opacity = 1;
+            slideIndex = i+1;
+            moveSlide();
+        });
+    });
+
+    const moveSlide = () => {
+        slideIndex > slides.length ? slideIndex = 1         // check if index's correct
+            : slideIndex === 0 ? slideIndex = slides.length : slideIndex;
         sliderCurrent.textContent = getZero(slideIndex);
+        dots.forEach(dot => dot.style.opacity = 0.5);
+        dots[slideIndex-1].style.opacity = 1;
         slidesField.style.transform = `translateX(${0 - 100/slides.length * (slideIndex - 1)}%)`;
     };
 
     sliderNext.addEventListener('click', () => {
-        moveSlide(1);
+        slideIndex++;
+        moveSlide();
     });
      
     sliderPrev.addEventListener('click', () => {
-        moveSlide(-1);
+        slideIndex--;
+        moveSlide();
     });
 
     sliderTotal.textContent = getZero(slides.length);               // initial slider setup 
     sliderCurrent.textContent = getZero(slideIndex);
     moveSlide();
-
-/*     const showSlide = index => {
-        slides.forEach(slide => slide.style.display = 'none');
-        slides[index].style.display = 'block';
-    };
-    
-    const showNextSlide = () => {
-        +sliderCurrent.textContent + 1 > slides.length ? sliderCurrent.textContent = '01' 
-            : sliderCurrent.textContent = getZero((+sliderCurrent.textContent) + 1);        
-        showSlide(+sliderCurrent.textContent - 1);
-    };
-
-    const showPrevSlide = () => {
-        +sliderCurrent.textContent - 1 === 0 ? sliderCurrent.textContent = getZero(slides.length) 
-            : sliderCurrent.textContent = getZero((+sliderCurrent.textContent) - 1);        
-        showSlide(+sliderCurrent.textContent - 1);
-    };
-    
-    sliderNext.addEventListener('click', () => {
-        showNextSlide();
-    });
-
-    sliderPrev.addEventListener('click', () => {
-        showPrevSlide();
-    });
-
-    // initial slider setup
-    sliderTotal.textContent = getZero(slides.length);
-    sliderCurrent.textContent = getZero(Math.floor(1 + Math.random()*slides.length));
-    showSlide(+sliderCurrent.textContent - 1); */
 });
