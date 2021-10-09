@@ -293,7 +293,8 @@ window.addEventListener('DOMContentLoaded', () => {
           slides = sliderTab.querySelectorAll('.offer__slide'),
           slidesWrapper = sliderTab.querySelector('.offer__slider-wrapper'),
           slidesField = sliderTab.querySelector('.offer__slider-inner'),
-          width = window.getComputedStyle(slidesWrapper).width;
+          width = window.getComputedStyle(slidesWrapper).width,
+          dots = [];
         
     let slideIndex = Math.floor(1 + Math.random()*slides.length);
 
@@ -302,36 +303,35 @@ window.addEventListener('DOMContentLoaded', () => {
     slidesField.style.transition = '0.5s all';
     slidesWrapper.style.overflow = 'hidden';
 
-    const dotsField = document.createElement('div');
+    const dotsField = document.createElement('div');        // create indicators field
     dotsField.classList.add('carousel-indicators');
     slidesWrapper.style.position = 'relative';
     slidesWrapper.append(dotsField);
 
-    slides.forEach((slide, i) => {
+    slides.forEach(slide => {
         slide.style.width = width;                           // force proper width
         const dot = document.createElement('div');           // create indicators
         dot.classList.add('dot');
         dotsField.append(dot);
-    });
-
-    const dots = dotsField.querySelectorAll('.dot');
-    dots.forEach((item, i) => {
-        item.addEventListener('click', () => {
-            dots.forEach(dot => dot.style.opacity = 0.5);
-            item.style.opacity = 1;
-            slideIndex = i+1;
-            moveSlide();
-        });
+        dots.push(dot);
     });
 
     const moveSlide = () => {
         slideIndex > slides.length ? slideIndex = 1         // check if index's correct
             : slideIndex === 0 ? slideIndex = slides.length : slideIndex;
         sliderCurrent.textContent = getZero(slideIndex);
-        dots.forEach(dot => dot.style.opacity = 0.5);
-        dots[slideIndex-1].style.opacity = 1;
+        dots.forEach((dot, i) => {
+            i === slideIndex - 1 ? dot.style.opacity = 1 : dot.style.opacity = 0.5;
+        });
         slidesField.style.transform = `translateX(${0 - 100/slides.length * (slideIndex - 1)}%)`;
     };
+
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            slideIndex = i+1;
+            moveSlide();
+        });
+    });
 
     sliderNext.addEventListener('click', () => {
         slideIndex++;
@@ -344,6 +344,5 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     sliderTotal.textContent = getZero(slides.length);               // initial slider setup 
-    sliderCurrent.textContent = getZero(slideIndex);
     moveSlide();
 });
