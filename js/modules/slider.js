@@ -1,12 +1,11 @@
-function slider({container, next, prev, totalCounter, currentCounter, slidePack, wrapper, field}) {
-    const sliderTab = document.querySelector(container),
-          sliderNext = sliderTab.querySelector(next),
-          sliderPrev = sliderTab.querySelector(prev),
-          sliderTotal = sliderTab.querySelector(totalCounter),
-          sliderCurrent = sliderTab.querySelector(currentCounter),   
-          slides = sliderTab.querySelectorAll(slidePack),
-          slidesWrapper = sliderTab.querySelector(wrapper),
-          slidesField = sliderTab.querySelector(field),
+function slider({next, prev, totalCounter, currentCounter, slidePack, wrapper, field}) {
+    const sliderNext = document.querySelector(next),
+          sliderPrev = document.querySelector(prev),
+          sliderTotal = document.querySelector(totalCounter),
+          sliderCurrent = document.querySelector(currentCounter),   
+          slides = document.querySelectorAll(slidePack),
+          slidesWrapper = document.querySelector(wrapper),
+          slidesField = document.querySelector(field),
           
           width = window.getComputedStyle(slidesWrapper).width,
           dots = [],
@@ -21,6 +20,18 @@ function slider({container, next, prev, totalCounter, currentCounter, slidePack,
 
     const dotsField = document.createElement('ol');           // create indicators field
     dotsField.classList.add('carousel-indicators');
+    dotsField.style.cssText = `
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 15;
+        display: flex;
+        justify-content: center;
+        margin-right: 15%;
+        margin-left: 15%;
+        list-style: none;
+    `;
     slidesWrapper.style.position = 'relative';
     slidesWrapper.append(dotsField);
 
@@ -29,6 +40,21 @@ function slider({container, next, prev, totalCounter, currentCounter, slidePack,
         slide.style.width = width;                           // force proper width
         const dot = document.createElement('li');            // create indicators
         dot.classList.add('dot');
+        dot.style.cssText = `
+            box-sizing: content-box;
+            flex: 0 1 auto;
+            width: 30px;
+            height: 6px;
+            margin-right: 3px;
+            margin-left: 3px;
+            cursor: pointer;
+            background-color: #fff;
+            background-clip: padding-box;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            opacity: .5;
+            transition: opacity .6s ease;
+        `;
         dotsField.append(dot);
         dots.push(dot);
     });

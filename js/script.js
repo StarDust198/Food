@@ -21,7 +21,6 @@ window.addEventListener('DOMContentLoaded', () => {
     calc();
     forms('form', '.modal', modalTimerId);
     slider({
-        container: '.offer__slider',
         next: '.offer__slider-next',
         prev: '.offer__slider-prev',
         totalCounter: '#total',

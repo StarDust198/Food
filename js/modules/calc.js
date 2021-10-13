@@ -1,9 +1,9 @@
 function calc() {
     const result = document.querySelector('.calculating__result span');
     let sex = localStorage.getItem('sex') || 'female',
-        height = localStorage.getItem('height'),
-        weight = localStorage.getItem('weight'),
-        age = localStorage.getItem('age'),
+        height = +localStorage.getItem('height'),
+        weight = +localStorage.getItem('weight'),
+        age = +localStorage.getItem('age'),
         ratio = localStorage.getItem('ratio') || 1.375;
     
 
@@ -60,7 +60,8 @@ function calc() {
     const getDynamicInfo = function(selector) {
         const input = document.querySelector(selector);
 
-        input.value = localStorage.getItem(input.getAttribute('id'));
+        localStorage.getItem(input.getAttribute('id')) == 0 ? input.value = '' : input.value =
+            localStorage.getItem(input.getAttribute('id'));
 
         input.addEventListener('input', () => {
 

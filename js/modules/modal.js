@@ -19,7 +19,7 @@ function modal(modalSelector, modalBtnSelector, modalTimerId) {
     const modalBtns = document.querySelectorAll(modalBtnSelector),
           modal = document.querySelector(modalSelector), 
           showModalByScroll = function() {
-            if (window.pageYOffset + document.documentElement.clientHeight >= 
+            if (window.pageYOffset + document.documentElement.clientHeight + 1 >= 
                 document.documentElement.scrollHeight) {
                     openModal(modalSelector, modalTimerId);
                     window.removeEventListener('scroll', showModalByScroll);
@@ -41,7 +41,9 @@ function modal(modalSelector, modalBtnSelector, modalTimerId) {
         }
     });
 
-    window.addEventListener('scroll', showModalByScroll);
+    window.addEventListener('scroll', () => {
+      showModalByScroll();
+    });
 }
 
 export default modal;
