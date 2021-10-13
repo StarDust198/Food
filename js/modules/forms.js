@@ -1,5 +1,9 @@
-function forms() { 
-    const forms = document.querySelectorAll('form');
+import {openModal, closeModal} from './modal';
+const axios = require('../services/axios.min');
+
+function forms(formSelector, modalSelector, modalTimerId) { 
+    const forms = document.querySelectorAll(formSelector),
+          modal = document.querySelector(modalSelector);
 
     const message = {
         loading: 'icons/spinner.svg',
@@ -46,7 +50,7 @@ function forms() {
 
         prevModalDialog.classList.remove('show');
         prevModalDialog.classList.add('hide');
-        openModal();
+        openModal(modalSelector, modalTimerId);
 
         const thanksModal = document.createElement('div');
         thanksModal.classList.add('modal__dialog');
@@ -62,9 +66,9 @@ function forms() {
             thanksModal.remove();
             prevModalDialog.classList.remove('hide');
             prevModalDialog.classList.add('show');
-            closeModal();
+            closeModal(modalSelector);
         }, 4000);
     }
 }
 
-module.exports = forms;
+export default forms;

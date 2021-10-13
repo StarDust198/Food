@@ -1,3 +1,5 @@
+const axios = require('../services/axios.min');
+
 function cards() {
     document.querySelector('.menu__field .container').innerHTML = '';
 
@@ -48,4 +50,4 @@ function cards() {
         });
 }
 
-module.exports = cards;
+export default cards;

@@ -1,14 +1,16 @@
-function slider() {
-    const sliderTab = document.querySelector('.offer__slider'),
-          sliderNext = sliderTab.querySelector('.offer__slider-next'),
-          sliderPrev = sliderTab.querySelector('.offer__slider-prev'),
-          sliderTotal = sliderTab.querySelector('#total'),
-          sliderCurrent = sliderTab.querySelector('#current'),   
-          slides = sliderTab.querySelectorAll('.offer__slide'),
-          slidesWrapper = sliderTab.querySelector('.offer__slider-wrapper'),
-          slidesField = sliderTab.querySelector('.offer__slider-inner'),
+function slider({container, next, prev, totalCounter, currentCounter, slidePack, wrapper, field}) {
+    const sliderTab = document.querySelector(container),
+          sliderNext = sliderTab.querySelector(next),
+          sliderPrev = sliderTab.querySelector(prev),
+          sliderTotal = sliderTab.querySelector(totalCounter),
+          sliderCurrent = sliderTab.querySelector(currentCounter),   
+          slides = sliderTab.querySelectorAll(slidePack),
+          slidesWrapper = sliderTab.querySelector(wrapper),
+          slidesField = sliderTab.querySelector(field),
+          
           width = window.getComputedStyle(slidesWrapper).width,
-          dots = [];
+          dots = [],
+          getZero = num => num < 10 ? `0${num}` : `${num}`;
   
     let slideIndex = Math.floor(1 + Math.random()*slides.length);
 
@@ -42,10 +44,10 @@ function slider() {
     moveSlide();
 
     dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-        slideIndex = i+1;
-        moveSlide();
-    });
+        dot.addEventListener('click', () => {
+            slideIndex = i+1;
+            moveSlide();
+        });
     });
 
     sliderNext.addEventListener('click', () => {
@@ -59,4 +61,4 @@ function slider() {
     });
 }
 
-module.exports = slider;
+export default slider;
