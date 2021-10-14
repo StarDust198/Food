@@ -1,7 +1,8 @@
-import {openModal, closeModal} from './modal';
-const axios = require('../services/axios.min');
+const axios = require('axios').default;
 
-function forms(formSelector, modalSelector, modalTimerId) { 
+import {openModal, closeModal} from './modal';
+
+function forms(formSelector, modalSelector, modalTimerId) {
     const forms = document.querySelectorAll(formSelector),
           modal = document.querySelector(modalSelector);
 

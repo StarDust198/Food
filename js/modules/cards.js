@@ -1,4 +1,4 @@
-const axios = require('../services/axios.min');
+const axios = require('axios').default;
 
 function cards() {
     document.querySelector('.menu__field .container').innerHTML = '';
