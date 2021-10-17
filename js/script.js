@@ -1,6 +1,11 @@
 'use strict';
 
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import 'dom-node-polyfills';
+require('es6-promise').polyfill();
+import 'whatwg-fetch';
+import 'formdata-polyfill';
 
 import tabs from './modules/tabs';
 import modal from './modules/modal';

@@ -1,5 +1,3 @@
-const axios = require('axios').default;
-
 import {openModal, closeModal} from './modal';
 
 function forms(formSelector, modalSelector, modalTimerId) {
@@ -30,19 +28,25 @@ function forms(formSelector, modalSelector, modalTimerId) {
 
             const formData = new FormData(form);
 
-            const obj = Object.fromEntries(formData.entries());
+            const obj = {};
 
-            axios.post('http://localhost:3000/requests', obj)
-                .then(response => {
-                    console.log(response);
-                    showThanksModal(message.success);
-                    form.reset();
-                    statusMessage.remove();
-                }).catch(() => {
-                    showThanksModal(message.failure);
-                }).finally(() => {
-                    form.reset();
-                });
+            formData.forEach((value, key) => obj[key] = value);
+
+            const json = JSON.stringify(obj);
+
+            fetch('http://localhost:3000/requests', {
+                method: 'POST',
+                body: json,
+                headers: { 'Content-type': 'application/json' }
+            }).then(response => {
+                showThanksModal(message.success);
+                form.reset();
+                statusMessage.remove();
+            }).catch(() => {
+                showThanksModal(message.failure);
+            }).finally(() => {
+                form.reset();
+            });
         });
     }
 

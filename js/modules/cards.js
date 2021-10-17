@@ -1,5 +1,3 @@
-const axios = require('axios').default;
-
 function cards() {
     document.querySelector('.menu__field .container').innerHTML = '';
 
@@ -39,14 +37,19 @@ function cards() {
         }
     }
 
-    axios.get('http://localhost:3000/menu')
-        .then(data => {
-            data.data.forEach(({img, altimg, title, descr, price}) => {
+    fetch('http://localhost:3000/menu')
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw new Error(response.status);
+            }
+        }).then(data => {
+            data.forEach(({img, altimg, title, descr, price}) => {
                 new MenuCard(img, altimg, title, descr, price).createCard();
             });
-        })
-        .catch(error => {
-            console.log(error);
+        }).catch(error => {
+            console.log('Произошла ошибка, статус -', error.message);
         });
 }
 
