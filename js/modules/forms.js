@@ -40,7 +40,6 @@ function forms(formSelector, modalSelector, modalTimerId) {
                 headers: { 'Content-type': 'application/json' }
             }).then(response => {
                 showThanksModal(message.success);
-                form.reset();
                 statusMessage.remove();
             }).catch(() => {
                 showThanksModal(message.failure);

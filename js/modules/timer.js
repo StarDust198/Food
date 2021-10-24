@@ -1,5 +1,5 @@
 function timer(id, deadline) {
-    const getZero = num => num < 10 ? `0${num}` : `${num}`;
+    const getZero = num => num < 0 ? num = '00' : num < 10 ? `0${num}` : `${num}`;
 
     const getTimeRemaining = function(endTime) {
             const t = Date.parse(endTime) - Date.parse(new Date());
